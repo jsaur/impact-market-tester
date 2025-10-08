@@ -1,2 +1,3 @@
+// Note this is a proxy contract with the implementation 0xF9163f95DF91ad103659cb7C8936Aceb63c7E410
 export const IMPACT_MARKET_ADDRESS = "0x0A547bdE3FB47Bd59A78B0A285dB07C3Fce8b8B6"
 export const CUSD_ADDRESS = "0x765DE816845861e75A25fCA122bb6898B8B1282a"

@@ -3,13 +3,15 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { useCUSDBalance } from '@/hooks/useCUSDBalance'
 import { useContractAmounts } from '@/hooks/useContractAmounts'
+import { useWithdraw } from '@/hooks/useWithdraw'
 
 export default function Home() {
   const { address, isConnected } = useAccount()
   const { connect, connectors } = useConnect()
   const { disconnect } = useDisconnect()
   const { cusdBalance, cusdIsLoading, cusdError } = useCUSDBalance()
-  const { contractAmount, contractScaledAmount, contractIsLoading, contractError } = useContractAmounts()
+  const { contractAmount, contractFormattedAmount, contractScaledAmount, contractIsLoading, contractError } = useContractAmounts()
+  const  { withdrawAll, withdrawTxHash, withdrawIsLoading, withdrawError } = useWithdraw()
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24" suppressHydrationWarning>
@@ -36,7 +38,7 @@ export default function Home() {
                 : contractError ?
                   (<span className='text-red-500'>Error: {contractError}</span>)
                 : 
-                  (<span className='font-bold'>{parseFloat(contractAmount).toFixed(2)} cUSD</span>)
+                  (<span className='font-bold'>{parseFloat(contractFormattedAmount).toFixed(2)} cUSD</span>)
               }
             </p>
             <p className="mb-4">
@@ -47,6 +49,23 @@ export default function Home() {
                   (<span className='text-red-500'>Error: {contractError}</span>)
                 : 
                   (<span className='font-bold'>{parseFloat(contractScaledAmount).toFixed(2)} cUSD</span>)
+              }
+            </p>
+            <button 
+              onClick={() => withdrawAll(contractAmount)}
+              className='mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+              disabled={withdrawIsLoading || !contractAmount}
+            >
+              Withdraw All
+            </button>
+            <p className="mb-4 text-gray-500">
+              Withdraw result: {
+                withdrawIsLoading ? 
+                  (<span className='text-gray-500'>Loading...</span>)
+                : withdrawError ?
+                  (<span className='text-red-500'>Error: {withdrawError}</span>)
+                : 
+                  (<span className='font-bold'>{withdrawTxHash}</span>)
               }
             </p>
             <button onClick={() => disconnect()} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
