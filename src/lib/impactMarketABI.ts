@@ -1,6 +1,6 @@
 // From https://celo.blockscout.com/address/0xF9163f95DF91ad103659cb7C8936Aceb63c7E410?tab=contract_abi
 
-export const DEPOSIT_ABI = [
+export const IMPACT_MARKET_ABI = [
   {
     "anonymous": false,
     "inputs": [

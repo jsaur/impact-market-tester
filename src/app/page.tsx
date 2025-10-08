@@ -2,12 +2,14 @@
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { useCUSDBalance } from '@/hooks/useCUSDBalance'
+import { useContractAmounts } from '@/hooks/useContractAmounts'
 
 export default function Home() {
   const { address, isConnected } = useAccount()
   const { connect, connectors } = useConnect()
   const { disconnect } = useDisconnect()
-  const { balance, isLoading, error } = useCUSDBalance()
+  const { cusdBalance, cusdIsLoading, cusdError } = useCUSDBalance()
+  const { contractAmount, contractScaledAmount, contractIsLoading, contractError } = useContractAmounts()
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24" suppressHydrationWarning>
@@ -19,12 +21,32 @@ export default function Home() {
             <p className="mb-4">Connected: {address}</p>
             <p className="mb-4">
               cUSD Wallet Balance: {
-                isLoading ? 
+                cusdIsLoading ? 
                   (<span className='text-gray-500'>Loading...</span>)
-                : error ?
-                  (<span className='text-red-500'>Error: {error}</span>)
+                : cusdError ?
+                  (<span className='text-red-500'>Error: {cusdError}</span>)
                 : 
-                  (<span className='font-bold'>{parseFloat(balance).toFixed(2)} cUSD</span>)
+                  (<span className='font-bold'>{parseFloat(cusdBalance).toFixed(2)} cUSD</span>)
+              }
+            </p>
+            <p className="mb-4">
+              Impact Market Deposit Amount: {
+                contractIsLoading ? 
+                  (<span className='text-gray-500'>Loading...</span>)
+                : contractError ?
+                  (<span className='text-red-500'>Error: {contractError}</span>)
+                : 
+                  (<span className='font-bold'>{parseFloat(contractAmount).toFixed(2)} cUSD</span>)
+              }
+            </p>
+            <p className="mb-4">
+              Impact Market Deposit Amount Scaled: {
+                contractIsLoading ? 
+                  (<span className='text-gray-500'>Loading...</span>)
+                : contractError ?
+                  (<span className='text-red-500'>Error: {contractError}</span>)
+                : 
+                  (<span className='font-bold'>{parseFloat(contractScaledAmount).toFixed(2)} cUSD</span>)
               }
             </p>
             <button onClick={() => disconnect()} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">

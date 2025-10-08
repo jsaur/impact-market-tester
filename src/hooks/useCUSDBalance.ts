@@ -9,9 +9,9 @@ import { CUSD_ADDRESS } from '@/lib/constants'
 export function useCUSDBalance() {
     const { address, isConnected } = useAccount()
     const publicClient = usePublicClient()
-    const [balance, setBalance] = useState<string>('0')
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState<string|null>(null)
+    const [cusdBalance, setBalance] = useState<string>('0')
+    const [cusdIsLoading, setIsLoading] = useState(false)
+    const [cusdError, setError] = useState<string|null>(null)
 
     useEffect(() => {
         async function fetchBalance() {
@@ -32,7 +32,7 @@ export function useCUSDBalance() {
                 const balanceFormatted = formatUnits(balanceWei, 18)
                 setBalance(balanceFormatted)
             } catch (err) {
-                console.error('Error fetch cUSD balance:', err)
+                console.error('Error fetching cUSD balance:', err)
                 setError(err instanceof Error ? err.message : 'Unknown error')
             } finally {
                 setIsLoading(false)
@@ -42,5 +42,5 @@ export function useCUSDBalance() {
         fetchBalance()
     }, [address, isConnected, publicClient])
 
-    return { balance, isLoading, error }
+    return { cusdBalance, cusdIsLoading, cusdError }
 }
